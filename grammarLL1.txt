@@ -1,4 +1,10 @@
 1st transformation: precedences
+    - based on the lectures' slides (specifically the transformation
+    from slide 9 to slide 19 of the syntax analysis unit), I
+    created a non-terminal term which produces ** deeper in the grammar,
+    thus with higher priority. On the top level, exists the operator / 
+    whith lower priority. 
+
 
 1. exp -> term 
 2.     | exp / term 
@@ -18,6 +24,9 @@
 
 
 2nd transformation: associativity
+    - ** is already left associative since in can be produces
+    through left recursion, while the recursion of rule #2 should be swapped
+    since we need term to appear on the right side as a right associative.
 
 1. exp -> term 
 2.     | term / exp 
@@ -37,6 +46,10 @@
 
 
 3rd transformation: left factoring
+    - FIST(#1) = FIRST(#2) and FIRST(#7) = FIRST(#8),
+    so the first part which is similar in more than one rule
+    should be shared in a single rule and then the suffix should
+    be determined by the other rules.
 
 1. exp -> term expTail 
 
@@ -61,6 +74,8 @@
 
 
 4th transformation: elimination of left recursion
+    - left recursion appears only in rule #4, since
+    it is of type A->*Aa
 
 1. exp -> term expTail 
 
