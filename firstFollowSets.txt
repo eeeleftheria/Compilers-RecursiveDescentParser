@@ -18,28 +18,42 @@ FIRST(#13) = { A-Z }
 
 FOLLOW SETS
 ------------------------
-FOLLOW(exp) += FOLLOW(expTail) = { $, ) }
-FOLLOW(expTail) = { $ }
-FOLLOW(term) += FIRST(expTail) = { /, $ }
-FOLLOW(termTail) += FOLLOW(term) = { /, $ }
-FOLLOW(factor) += FIRST(termTail) = { $, ** }
-FOLLOW(str) += FOLLOW(factor) = { $, ** } += FOLLOW(strTail) = { $, ** }
-FOLLOW(strTail) = { $ }
-FOLLOW(char) += FIRST(strTail) = { a-z, A-Z, $} 
+FOLLOW(exp) = { $, ) }
+
+FOLLOW(expTail) = FOLLOW(exp) = { $, ) }
+
+FOLLOW(term) = FIRST(expTail) + FOLLOW(expTail) = { /, $, ) }
+    // FIST(expTail) contains ε, so term can be followed by 
+    // anything that can follow expTail as well
+
+FOLLOW(termTail) = FOLLOW(term) = { /, $, ) }
+
+FOLLOW(factor) = FIRST(termTail) + FOLLOW(termTail) = { $, **, /, ) }
+    // FIRST(termTail) contains ε, so a factor can be followed 
+    // by anything that can follow termTail as well
+
+FOLLOW(str) = FOLLOW(factor) = { $, **, /, ) }
+
+FOLLOW(strTail) = FOLLOW(str) = { $, **, /, ) }
+
+FOLLOW(char) = FIRST(strTail) + FOLLOW(strTail) = { a-z, A-Z, **, /, ), $} 
+    // FIRST(strTail) contains ε, so a char can be followed also
+    // by whatever can follow strTail
+
 
 
 FIRST+ SETS
 ------------------------
 FIRST+(#1) = { (, a-z, A-Z }
 FIRST+(#2) = { / }
-FIRST+(#3) = FOLLOW(expTail) = { $ }
+FIRST+(#3) += FOLLOW(expTail) = { $, ) }
 FIRST+(#4) = { (, a-z, A-Z }
 FIRST+(#5) = { ** }
-FIRST+(#6) = FOLLOW(termTail) = { /, $ }
+FIRST+(#6) += FOLLOW(termTail) = { /, $, ) }
 FIRST+(#7) = { a-z, A-Z}
 FIRST+(#8) = { ( }
 FIRST+(#9) = { a-z, A-Z }
 FIRST+(#10) = { a-z, A-z } 
-FIRST+(#11) = FOLLOW(strTail) = { $ }
+FIRST+(#11) += FOLLOW(strTail) = { $, **, /, ) }
 FIRST+(#12) = { a-z }
 FIRST+(#13) = { A-Z }
