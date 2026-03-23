@@ -1,0 +1,12 @@
+1. exp -> str 
+2.     | exp op exp 
+3.     | (exp)
+
+4. op -> / 
+5.     | **
+
+6. str -> char 
+7.     | char str
+
+8. char -> a-z 
+9.     | A-Z
