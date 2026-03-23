@@ -14,3 +14,72 @@
 
 9. char -> a-z 
 10.     | A-Z
+
+
+
+2nd transformation: associativity
+
+1. exp -> term 
+2.     | term / exp 
+
+3. term -> term ** factor
+4.     | factor
+
+5. factor -> str
+6.     | (exp)
+
+7. str -> char 
+8.     | char str
+
+9. char -> a-z 
+10.     | A-Z
+
+
+
+3rd transformation: left factoring
+
+1. exp -> term expTail 
+
+2. expTail -> / exp
+3.        | ε
+
+4. term -> term ** factor
+5.     | factor
+
+6. factor -> str
+7.     | (exp)
+
+8. str -> char strTail 
+
+9. strTail -> str
+10.        | ε
+
+11. char -> a-z 
+12.     | A-Z
+
+
+
+
+4th transformation: elimination of left recursion
+
+1. exp -> term expTail 
+
+2. expTail -> / exp
+3.        | ε
+
+4. term -> factor termTail
+
+5. termTail -> ** factor termTail
+6.      | ε
+
+7. factor -> str
+8.     | (exp)
+
+9. str -> char strTail 
+
+10. strTail -> str
+11.        | ε
+
+12. char -> a-z 
+13.     | A-Z
+
