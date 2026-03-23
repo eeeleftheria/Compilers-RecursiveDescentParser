@@ -1,0 +1,16 @@
+1st transformation: precedences
+
+1. exp -> term 
+2.     | exp / term 
+
+3. term -> term ** factor
+4.     | factor
+
+5. factor -> str
+6.     | (exp)
+
+7. str -> char 
+8.     | char str
+
+9. char -> a-z 
+10.     | A-Z
