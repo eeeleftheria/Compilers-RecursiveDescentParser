@@ -18,39 +18,122 @@ class Evaluator{
             throw new ParseError();
     }
 
-    private int Exp() throws IOException, ParseError{
+    public boolean Eval() throws IOException, ParseError{
+        boolean value = Exp();
+
+        if(lookahead != -1 && lookahead != '\n'){
+            throw new ParseError();
+        }
+
+        return value;
+    }
+
+    private boolean Exp() throws IOException, ParseError{
         // match exp -> term expTail 
+
+        if(Term() && ExpTail()){
+            return true;
+        }
+        return false;
     }
 
-    private int ExpTail() throws IOException, ParseError{
+    private boolean ExpTail() throws IOException, ParseError{
         // match expTail -> / exp
+        if(lookahead == '/'){
+            consume(lookahead);
+            if(Exp()){
+                return true;
+            } 
+        }
 
+        // expTail -> empty
+        return true;
     }
 
-    private int Term() throws IOException, ParseError{
+    private boolean Term() throws IOException, ParseError{
         //match term -> factor termTail
+        if(Factor() && TermTail()){
+            return true;
+        }
+        return false;
     }
 
-    private int TermTail() throws IOException, ParseError{
+    private boolean TermTail() throws IOException, ParseError{
         // match termTail-> ** factor termTail
+        if(lookahead == '*'){
+            consume(lookahead);
+            if(lookahead == '*'){
+                consume(lookahead);
+
+                if(Factor() && TermTail()){
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        // termTail -> empty
+        return true;
     }
 
-    private int Factor() throws IOException, ParseError{
+    private boolean Factor() throws IOException, ParseError{
         // match factor -> str
         // match factor -> (exp)
+
+        if(lookahead == '('){
+            consume(lookahead);
+
+            if(Exp()){
+
+                if(lookahead == ')'){
+                    consume(lookahead);
+                    return true;
+                }
+
+                // expected ')'
+                else{
+                    throw new ParseError();
+                }
+
+            }
+            return false;
+        }
+        else if(Str()){
+            return true;
+        }
+
+        return false;
     }
 
-    private int Str() throws IOException, ParseError{
+    private boolean Str() throws IOException, ParseError{
         // match str -> char strTail
+
+        if(Char() && StrTail()){
+            return true;
+        }
+        return false;
     }
 
-    private int StrTail() throws IOException, ParseError{
+    private boolean StrTail() throws IOException, ParseError{
         // match strTail-> str
+
+        if(Str()){
+            return true;
+        }
+        return true;
     }
 
-    private int Char() throws IOException, ParseError{
+    private boolean Char() throws IOException, ParseError{
         // match char -> a-z
         // match char -> A-Z 
+
+        if((lookahead >= 'a' && lookahead <= 'z') ||
+            (lookahead >= 'A' && lookahead <= 'Z')){
+                
+                consume(lookahead);
+                return true;
+        }
+        return false;
     }
 
 }
