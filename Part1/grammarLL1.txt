@@ -27,9 +27,9 @@ TRANSFORMATIONS
 1st transformation: precedences
     - based on the lectures' slides (specifically the transformation
     from slide 9 to slide 19 of the syntax analysis unit), I
-    created a non-terminal term which produces ** deeper in the grammar,
-    thus with higher priority. On the top level, exists the operator / 
-    with lower priority. 
+    created a non-terminal <term> which produces ** deeper in the grammar,
+    thus with higher priority. Basically, term is evaluated first as part of
+    the evaluation of <exp>, so ** is of greater priority than /.  
 
 
 1. exp -> term 
@@ -52,7 +52,8 @@ TRANSFORMATIONS
 2nd transformation: associativity
     - ** is already left associative since in can be produces
     through left recursion, while the recursion of rule #2 should be swapped
-    since we need term to appear on the right side as a right associative.
+    since we need term to appear on the right side as a right associative so 
+    the right operations are evaluated first.
 
 1. exp -> term 
 2.     | term / exp 
