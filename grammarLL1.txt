@@ -1,9 +1,35 @@
+FINAL LL(1)
+----------------------
+1. exp -> term expTail 
+
+2. expTail -> / exp
+3.        | ε
+
+4. term -> factor termTail
+
+5. termTail -> ** factor termTail
+6.      | ε
+
+7. factor -> str
+8.     | (exp)
+
+9. str -> char strTail 
+
+10. strTail -> str
+11.        | ε
+
+12. char -> a-z 
+13.     | A-Z
+
+
+TRANSFORMATIONS
+-----------------------
 1st transformation: precedences
     - based on the lectures' slides (specifically the transformation
     from slide 9 to slide 19 of the syntax analysis unit), I
     created a non-terminal term which produces ** deeper in the grammar,
     thus with higher priority. On the top level, exists the operator / 
-    whith lower priority. 
+    with lower priority. 
 
 
 1. exp -> term 
