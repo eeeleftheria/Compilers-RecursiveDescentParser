@@ -1,6 +1,7 @@
 
 [LL(1)-GRAMMAR]
 
+```
 1. exp -> term expTail 
 2. expTail -> / exp
 3.        | ε
@@ -14,6 +15,7 @@
 11.        | ε
 12. char -> a-z 
 13.     | A-Z
+```
 
 In order to transform the initial grammar to a LL(1) I applied 4 
 transformations:
@@ -23,7 +25,7 @@ created a non-terminal <term> which produces ** deeper in the grammar,
 thus with a higher priority. Basically, <term> is evaluated first as part of
 the evaluation of <exp> and only after that is the operation '/' 
 evaluated.  
-
+```
 1. exp -> term 
 2.     | exp / term 
 3. term -> term ** factor
@@ -34,12 +36,13 @@ evaluated.
 8.     | char str
 9. char -> a-z 
 10.     | A-Z
+```
 
 - associativity: ** is already left associative since in can be produced 
 through left recursion, while the recursion of rule #2 should be swapped 
 since we need <term> to appear on the right side as a right associative so 
 the right operations are evaluated first.
-
+```
 1. exp -> term 
 2.     | term / exp 
 3. term -> term ** factor
@@ -50,7 +53,7 @@ the right operations are evaluated first.
 8.     | char str
 9. char -> a-z 
 10.     | A-Z
-
+```
 - left factoring: 
 FIST(#1) = FIRST(#2) and FIRST(#7) = FIRST(#8), so the first part which is 
 similar in more than one rule should be shared in a single rule and then 
@@ -58,7 +61,7 @@ the suffix should be determined by the other rules.
 
 - elimination of left recursion:
 left recursion appears only in rule #4, since it is of type A->*Aa.
-
+```
 1. exp -> term expTail 
 2. expTail -> / exp
 3.        | ε
@@ -72,7 +75,7 @@ left recursion appears only in rule #4, since it is of type A->*Aa.
 11.        | ε
 12. char -> a-z 
 13.     | A-Z
-
+```
 
 [FIRST/FOLLOW-SETS]
 
