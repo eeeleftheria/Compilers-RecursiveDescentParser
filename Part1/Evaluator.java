@@ -34,11 +34,8 @@ class Evaluator{
     }
 
     private String EvalDoubleStar(String s1, String s2) throws IOException, ParseError{
-        
-        // remove the "**"
-        String s = s2.substring(2, s2.length());
-        
-        String res = s1 + s + s;
+
+        String res = s1 + s2 + s2;
 
         return res;
     }
@@ -117,20 +114,16 @@ class Evaluator{
             lookahead == '('){
             
                 String f = Factor();
-                String t = TermTail();
+                String t = TermTail(f);
 
-                if(!t.isEmpty()){
-                    return EvalDoubleStar(f, t);
-                }
-
-                return f;
+                return t;
         }
         
         System.out.println("#4");
         throw new ParseError();
     }
 
-    private String TermTail() throws IOException, ParseError{
+    private String TermTail(String left) throws IOException, ParseError{
         // match termTail-> ** factor termTail
         
         // follow rule #5
@@ -141,10 +134,16 @@ class Evaluator{
                 consume(lookahead);
 
                 String f = Factor();
-                String t = TermTail();
-                String res = "**" + f + t;
+                // since ** is left associative we should calculate
+                // it before going on with the deeper operations
+                String newLeft = EvalDoubleStar(left, f);
 
-                return res;
+                // the result of the ** is given as input for the 
+                // next recursion, since in case we meet another **
+                // we should have: newLeft**X
+                String t = TermTail(newLeft);
+
+                return t;
             }
 
             // expected input is '*'
@@ -157,7 +156,9 @@ class Evaluator{
         // match termTail -> empty
         // follow rule #6
         else if(lookahead == '/' || lookahead == ')' || lookahead == -1 || lookahead == '\n'){
-            return "";
+            
+            // if there is no ** the string remains as it is
+            return left;
         }
 
         System.out.println("#6");
