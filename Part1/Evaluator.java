@@ -8,132 +8,227 @@ class Evaluator{
 
     public Evaluator(InputStream in) throws IOException{
         this.in = in;
+
+        // reads next char from input and returns its int value
         lookahead = in.read();
     }
 
     private void consume(int symbol) throws IOException, ParseError{
-        if(lookahead == symbol)
+        if(lookahead == symbol){
             lookahead = in.read();
+        }
         else
             throw new ParseError();
     }
 
-    public boolean Eval() throws IOException, ParseError{
-        boolean value = Exp();
+    public String Eval() throws IOException, ParseError{
+        String value = Exp();
 
         if(lookahead != -1 && lookahead != '\n'){
+            
+            System.out.println("#3");
             throw new ParseError();
         }
 
         return value;
     }
 
-    private boolean Exp() throws IOException, ParseError{
+    private String Exp() throws IOException, ParseError{
+       
         // match exp -> term expTail 
 
-        if(Term() && ExpTail()){
-            return true;
+        // follow rule #1
+        if(lookahead >= 'a' && lookahead <= 'z' ||
+            lookahead >= 'A' && lookahead <= 'Z' 
+        ){
+            return Term() + ExpTail();
         }
-        return false;
+
+        // follow rule #1
+        else if(lookahead == '('){
+
+            return Term() + ExpTail();
+        }
+
+        // parse error for any other input
+        System.out.println("#10000");
+        throw new ParseError();
     }
 
-    private boolean ExpTail() throws IOException, ParseError{
+    private String ExpTail() throws IOException, ParseError{
         // match expTail -> / exp
+        
         if(lookahead == '/'){
+            // '/' is met in actual rule so consume it
             consume(lookahead);
-            if(Exp()){
-                return true;
-            } 
+            
+            String s = Exp();
+            return '/' + s;
         }
 
-        // expTail -> empty
-        return true;
+        // match expTail -> empty
+        else if(lookahead == ')' || lookahead == -1 || lookahead == '\n'){
+            return "";
+        }
+
+        System.out.println("#2");
+        throw new ParseError();
     }
 
-    private boolean Term() throws IOException, ParseError{
+    private String Term() throws IOException, ParseError{
         //match term -> factor termTail
-        if(Factor() && TermTail()){
-            return true;
+
+        if(lookahead >= 'a' && lookahead <= 'z' ||
+            lookahead >= 'A' && lookahead <= 'Z'){
+
+            return Factor() + TermTail();
         }
-        return false;
+
+        else if(lookahead == '('){
+
+            return Factor() + TermTail();
+        }
+        
+        System.out.println("#4");
+        throw new ParseError();
     }
 
-    private boolean TermTail() throws IOException, ParseError{
+    private String TermTail() throws IOException, ParseError{
         // match termTail-> ** factor termTail
+        
+        // follow rule #5
         if(lookahead == '*'){
             consume(lookahead);
+            
             if(lookahead == '*'){
                 consume(lookahead);
 
-                if(Factor() && TermTail()){
-                    return true;
-                }
-                return false;
+                String f = Factor();
+                String t = TermTail();
+                String res = "**" + f + t;
+
+                // ???? evaluation of **
+                return res;
+            }
+
+            // expected input is '*'
+            else{
+                System.out.println("#5");
+                throw new ParseError();
             }
         }
 
-        // termTail -> empty
-        return true;
+        // match termTail -> empty
+        // follow rule #6
+        else if(lookahead == '/' || lookahead == ')' || lookahead == -1 || lookahead == '\n'){
+            return "";
+        }
+
+        System.out.println("#6");
+        throw new ParseError();
     }
 
-    private boolean Factor() throws IOException, ParseError{
+    private String Factor() throws IOException, ParseError{
+        
         // match factor -> str
+        if((lookahead >= 'A' && lookahead <= 'Z') ||
+        (lookahead >= 'a' && lookahead <= 'z')){
+            
+            return Str();
+        }
+        
         // match factor -> (exp)
-
-        if(lookahead == '('){
+        else if(lookahead == '('){
             consume(lookahead);
 
-            if(Exp()){
+            String s = Exp();
 
-                if(lookahead == ')'){
-                    consume(lookahead);
-                    return true;
-                }
+            if(lookahead == ')'){
+                consume(lookahead);
 
-                // expected ')'
-                else{
-                    throw new ParseError();
-                }
-
+                return '(' + s + ')';
             }
-            return false;
-        }
-        else if(Str()){
-            return true;
+
+            // expected ')'
+            else{
+                System.out.println("#7");
+                throw new ParseError();
+            }
+
         }
 
-        return false;
+        System.out.println("#8");
+        throw new ParseError();
     }
 
-    private boolean Str() throws IOException, ParseError{
+    private String Str() throws IOException, ParseError{
+      
         // match str -> char strTail
-
-        if(Char() && StrTail()){
-            return true;
+        if((lookahead >= 'a' && lookahead <= 'z') ||
+            (lookahead >= 'A' && lookahead <= 'Z')){
+            
+            return Char() + StrTail();
         }
-        return false;
+
+        System.out.println("#9");
+        throw new ParseError();
     }
 
-    private boolean StrTail() throws IOException, ParseError{
+    private String StrTail() throws IOException, ParseError{
+       
         // match strTail-> str
+        if(lookahead >= 'a' && lookahead <= 'z'){           
 
-        if(Str()){
-            return true;
+            return Str();
+
         }
-        return true;
+
+        else if(lookahead >= 'A' && lookahead <= 'Z'){
+
+            return Str();
+        }
+
+        // follow rule #11: empty
+        else if(lookahead == '*'){
+
+            if(lookahead == '*'){
+
+                return "";
+            }
+            else{
+            
+                System.out.println("#10");
+                throw new ParseError();
+            }
+        }
+
+        // follow rule #11: empty
+        else if(lookahead == '/' || lookahead == ')' || lookahead == -1 || lookahead == '\n'){
+            
+            return "";
+        }        
+
+        System.out.println("#11");
+        throw new ParseError();
     }
 
-    private boolean Char() throws IOException, ParseError{
+    private char Char() throws IOException, ParseError{
         // match char -> a-z
         // match char -> A-Z 
 
-        if((lookahead >= 'a' && lookahead <= 'z') ||
-            (lookahead >= 'A' && lookahead <= 'Z')){
-                
-                consume(lookahead);
-                return true;
+        if(lookahead >= 'a' && lookahead <= 'z'){       
+            int old = lookahead;    
+            consume(lookahead);
+            return (char)old;
         }
-        return false;
+        else if(lookahead >= 'A' && lookahead <= 'Z'){
+            int old = lookahead;
+            consume(lookahead);
+            return (char)old;
+        }
+        
+        System.out.println("#12");
+        throw new ParseError();
     }
 
 }
