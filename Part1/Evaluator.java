@@ -33,8 +33,13 @@ class Evaluator{
         return value;
     }
 
-    private String EvalDoubleStar(String s) throws IOException, ParseError{
-        String res = s;
+    private String EvalDoubleStar(String s1, String s2) throws IOException, ParseError{
+        
+        // remove the "**"
+        String s = s2.substring(2, s2.length());
+        
+        String res = s1 + s + s;
+
         return res;
     }
 
@@ -67,7 +72,7 @@ class Evaluator{
         ){
 
             String t = Term();
-            String e = ExpTail(t);
+            String e = ExpTail();
 
             // if the expTail is not empty we have /exp case
             if(!e.isEmpty()){
@@ -84,7 +89,7 @@ class Evaluator{
         throw new ParseError();
     }
 
-    private String ExpTail(String left) throws IOException, ParseError{
+    private String ExpTail() throws IOException, ParseError{
         // match expTail -> / exp
         
         if(lookahead == '/'){
@@ -108,14 +113,17 @@ class Evaluator{
         //match term -> factor termTail
 
         if(lookahead >= 'a' && lookahead <= 'z' ||
-            lookahead >= 'A' && lookahead <= 'Z'){
+            lookahead >= 'A' && lookahead <= 'Z' ||
+            lookahead == '('){
+            
+                String f = Factor();
+                String t = TermTail();
 
-            return Factor() + TermTail();
-        }
+                if(!t.isEmpty()){
+                    return EvalDoubleStar(f, t);
+                }
 
-        else if(lookahead == '('){
-
-            return Factor() + TermTail();
+                return f;
         }
         
         System.out.println("#4");
@@ -136,7 +144,6 @@ class Evaluator{
                 String t = TermTail();
                 String res = "**" + f + t;
 
-                // ???? evaluation of **
                 return res;
             }
 
