@@ -33,6 +33,7 @@ class Evaluator{
         return value;
     }
 
+    // evaluates s1**s2
     private String EvalDoubleStar(String s1, String s2) throws IOException, ParseError{
 
         String res = s1 + s2 + s2;
@@ -40,20 +41,17 @@ class Evaluator{
         return res;
     }
 
+    // evaluates s1/s2
     private String EvalExcl(String s1, String s2) throws IOException, ParseError{
-        
-        String res = s1;
-
-        // remove the '/'
-        String suffix = s2.substring(1, s2.length());
 
         // if it is indeed a suffix of s1, remove it
-        if(s1.endsWith(suffix)){
+        if(s1.endsWith(s2)){
             // we want to keep only the initial string without the suffix
-            res = s1.substring(0, s1.length() - suffix.length());
+            String res = s1.substring(0, s1.length() - s2.length());
+            return res;
         }
 
-        return res;
+        return s1;
     }
 
 
@@ -94,7 +92,7 @@ class Evaluator{
             consume(lookahead);
             
             String s = Exp();
-            return '/' + s;
+            return s;
         }
 
         // match expTail -> empty
