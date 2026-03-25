@@ -33,21 +33,50 @@ class Evaluator{
         return value;
     }
 
+    private String EvalDoubleStar(String s) throws IOException, ParseError{
+        String res = s;
+        return res;
+    }
+
+    private String EvalExcl(String s1, String s2) throws IOException, ParseError{
+        
+        String res = s1;
+
+        // remove the '/'
+        String suffix = s2.substring(1, s2.length());
+
+        // if it is indeed a suffix of s1, remove it
+        if(s1.endsWith(suffix)){
+            // we want to keep only the initial string without the suffix
+            res = s1.substring(0, s1.length() - suffix.length());
+        }
+
+        return res;
+    }
+
+
+
     private String Exp() throws IOException, ParseError{
        
         // match exp -> term expTail 
 
         // follow rule #1
         if(lookahead >= 'a' && lookahead <= 'z' ||
-            lookahead >= 'A' && lookahead <= 'Z' 
+            lookahead >= 'A' && lookahead <= 'Z'  ||
+            lookahead == '('
         ){
-            return Term() + ExpTail();
-        }
 
-        // follow rule #1
-        else if(lookahead == '('){
+            String t = Term();
+            String e = ExpTail(t);
 
-            return Term() + ExpTail();
+            // if the expTail is not empty we have /exp case
+            if(!e.isEmpty()){
+                return EvalExcl(t, e);
+            }
+            else {
+                return t;
+            }
+          
         }
 
         // parse error for any other input
@@ -55,7 +84,7 @@ class Evaluator{
         throw new ParseError();
     }
 
-    private String ExpTail() throws IOException, ParseError{
+    private String ExpTail(String left) throws IOException, ParseError{
         // match expTail -> / exp
         
         if(lookahead == '/'){
@@ -146,7 +175,7 @@ class Evaluator{
             if(lookahead == ')'){
                 consume(lookahead);
 
-                return '(' + s + ')';
+                return s;
             }
 
             // expected ')'
@@ -226,7 +255,7 @@ class Evaluator{
             consume(lookahead);
             return (char)old;
         }
-        
+
         System.out.println("#12");
         throw new ParseError();
     }
