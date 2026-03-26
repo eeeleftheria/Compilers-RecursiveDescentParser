@@ -212,13 +212,8 @@ class Evaluator{
     private String StrTail() throws IOException, ParseError{
        
         // match strTail-> str
-        if(lookahead >= 'a' && lookahead <= 'z'){           
-
-            return Str();
-
-        }
-
-        else if(lookahead >= 'A' && lookahead <= 'Z'){
+        if(lookahead >= 'a' && lookahead <= 'z' ||
+            (lookahead >= 'A' && lookahead <= 'Z')){           
 
             return Str();
         }
@@ -251,13 +246,8 @@ class Evaluator{
         // match char -> a-z
         // match char -> A-Z 
 
-        if(lookahead >= 'a' && lookahead <= 'z'){       
+        if((lookahead >= 'a' && lookahead <= 'z') || (lookahead >= 'A' && lookahead <= 'Z')){       
             int old = lookahead;    
-            consume(lookahead);
-            return (char)old;
-        }
-        else if(lookahead >= 'A' && lookahead <= 'Z'){
-            int old = lookahead;
             consume(lookahead);
             return (char)old;
         }
