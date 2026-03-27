@@ -1,5 +1,5 @@
 
-[LL(1)-GRAMMAR]
+## LL(1)-GRAMMAR
 
 ```
 1. exp -> term expTail 
@@ -77,17 +77,17 @@ left recursion appears only in rule #4, since it is of type A->*Aa.
 13.     | A-Z
 ```
 
-[FIRST/FOLLOW-SETS]
+## FIRST/FOLLOW-SETS
 
 After making our grammar a LL(1) grammar, I calculated the 
 FIRST AND FOLLOW sets of each rule and finally, the FIRST+ sets. The 
 detailed process can be viewed in the <firstFollowSets.txt> file. 
 
-[LOOKUP-TABLE]
+## LOOKUP-TABLE
 
 The lookup table can be viewd in the <lookupTable.txt> file.
 
-[EVALUATOR]
+## EVALUATOR
 
 My solution for the parser was built upon the TernaryGrammar example we were
 given and the lectures' slides. Initially, i started by returning true or
