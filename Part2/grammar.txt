@@ -1,0 +1,49 @@
+1.    identifier -> a-z Tail 
+2.        | A-Z Tail
+3.        | _ Tail
+
+4.    Tail -> a-z Tail
+5.        | A-Z Tail
+6.        | _ Tail
+7.        | 0-9 Tail
+8.        | ε
+
+9.    definition -> identifier ( parameters ) { exp }
+
+10.    parameters -> identifier ParTail
+11.        | ε
+
+12.    ParTail -> , parameters 
+13.        | ε
+
+14.    exp -> exp + exp
+15.        | str
+16.        | call
+17.        | identifier
+18.        | ifExp 
+
+19.    call -> identifier ( args )
+
+20.    args -> call ArgTail
+21.        | str ArgTail
+22.        | ifExp ArgTail
+23.        | str + str ArgTail
+24.        | ε
+
+25.    ArgTail -> ,args
+26.            | ε
+
+27.    ifExp -> if ( ifCond ) exp else exp
+
+28.    ifCond -> exp prefix exp
+29.        | exp suffix exp
+
+
+30.    str -> char StrTail
+
+31.    strTail -> str 
+32.        | ε
+
+33.    char -> a-z
+34.        | A-Z
+
