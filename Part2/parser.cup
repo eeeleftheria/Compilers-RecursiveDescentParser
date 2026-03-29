@@ -20,7 +20,7 @@ scan with {: return s.next_token(); :};
 
 /* Terminals (tokens returned by the scanner). */
 terminal PLUS;
-terminal LPAREN, RPAREN, COMMA, LBRACKET, RBRACKET;
+terminal LPAREN, RPAREN, COMMA, LBRACE, RBRACE;
 terminal IF, ELSE, PREFIX, SUFFIX;       
 terminal String     STRING_LITERAL;  // the String means the token carries a string value
 terminal String     IDENTIFIER;
@@ -28,9 +28,9 @@ terminal String     IDENTIFIER;
 
 /*  Non terminals */
 non terminal String start_list;
-non terminal String    exp;
-non terminal definitions;
-//, calls, parameters, parTail, args_list, arg, ifExp, ifCond;      
+non terminal String exp;
+non terminal String definitions, calls;
+//, parameters, parTail, args_list, arg, ifExp, ifCond;      
 
 
 
@@ -43,12 +43,21 @@ start with start_list;
 
 //####  The Grammar Rules
 
-start_list ::= exp:e         {: System.out.println(e); :}
+start_list ::= definitions:d calls:c         {: System.out.println(d + c); :}
             ;
 
 exp      ::= exp:e1 PLUS exp:e2     {:  RESULT = e1 + " + " +  e2;  :} // we are building the java code
             | STRING_LITERAL:s	    {:  RESULT = "\"" +  s  +  "\"";  :}
-            | IDENTIFIER:i          {:  RESULT = i;:}
-            //  | call:c
+            | IDENTIFIER:i          {:  RESULT = i; :}
+            | calls:c               {:  RESULT = c; :} // it is already a String
             //  | ifExp:
              ;
+
+definitions ::= definitions:d IDENTIFIER:i  LPAREN RPAREN LBRACE RBRACE   {: RESULT = d + i + "(" + ")" + "{" + "}"; :}
+            | IDENTIFIER:i LPAREN RPAREN LBRACE RBRACE {: RESULT = i + "(" + ")" + "{" + "}"; :}
+ 
+    ;
+calls    ::= calls:c IDENTIFIER:i LPAREN RPAREN   {:  RESULT = c + i + "(" + ")"; :}
+            | IDENTIFIER:i LPAREN RPAREN  {:  RESULT = i + "(" + ")"; :}
+
+        ;

@@ -76,8 +76,8 @@ SUFFIX = "suffix"
  "("        {  return symbol(sym.LPAREN); }
  ")"        {  return symbol(sym.RPAREN); }
  ","        {  return symbol(sym.COMMA);}
- "{"        {  return symbol(sym.LBRACKET);}
- "}"        {  return symbol(sym.RBRACKET);}
+ "{"        {  return symbol(sym.LBRACE);}
+ "}"        {  return symbol(sym.RBRACE);}
  {IF}        {  return symbol(sym.IF);}
  {ELSE}      {  return symbol(sym.ELSE);}
 {PREFIX}    {  return symbol(sym.PREFIX);}
