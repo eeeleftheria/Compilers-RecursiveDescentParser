@@ -1,52 +1,49 @@
-1.    identifier -> a-z Tail 
-2.        | A-Z Tail
-3.        | _ Tail
-
-4.    Tail -> a-z Tail
-5.        | A-Z Tail
-6.        | _ Tail
-7.        | 0-9 Tail
-8.        | ε
-
-9.    definition -> identifier ( parameters ) { exp }
-
-10.    parameters -> identifier ParTail
-11.        | ε
-
-12.    ParTail -> , parameters 
-13.        | ε
-
-14.    exp -> exp + exp
-15.        | str
-16.        | call
-17.        | identifier
-18.        | ifExp 
-
-19.    call -> identifier ( args_list )
-
-// arguments that we pass when called a function
-// cannot be of type identifier
-20.    args_list -> arg 
-21.        | args_list , arg 
-22.        | ε
-
-23.    arg -> arg + arg 
-24.        |  str 
-25.        |  call 
-26.        | ifExp
-27.        | ε
-
-28.    ifExp -> if ( ifCond ) exp else exp
-
-29.    ifCond -> exp prefix exp
-30.        | exp suffix exp
+start_list -> definitions calls
 
 
-31.    str -> char StrTail
+identifier -> a-z Tail 
+    | A-Z Tail
+    | _ Tail
 
-32.    strTail -> str 
-33.        | ε
+Tail -> a-z Tail
+    | A-Z Tail
+    | _ Tail
+    | 0-9 Tail
+    | ε
 
-34.    char -> a-z
-35.        | A-Z
+definitions -> identifier ( parameters ) { exp } definitions
+
+parameters -> identifier ParTail
+    | ε
+
+ParTail -> , parameters 
+    | ε
+
+exp -> exp + exp
+    | str
+    | call
+    | identifier
+    | ifExp 
+
+calls -> identifier ( args_list ) calls
+
+// arguments that we pass when call a function
+args_list -> exp 
+    | args_list, exp
+    | ε
+
+
+ifExp -> if ( ifCond ) exp else exp
+
+ifCond -> exp prefix exp
+    | exp suffix exp
+
+
+str -> char StrTail
+
+strTail -> str 
+    | ε
+
+char -> a-z
+    | A-Z
 

@@ -1,0 +1,54 @@
+/* Simple +/-/* expression language; parser evaluates constant expressions on the fly*/
+/**
+ *  Package and Import Specifications
+ */
+import java_cup.runtime.*;
+
+//####  Usercode Components
+
+parser code {:
+    // Connect this parser to a scanner!
+    Scanner s;
+    Parser(Scanner s){ this.s=s; }
+:}
+
+/* define how to connect to the scanner! */
+scan with {: return s.next_token(); :};
+
+
+//#### Symbol Lists
+
+/* Terminals (tokens returned by the scanner). */
+terminal PLUS;
+terminal LPAREN, RPAREN, COMMA, LBRACKET, RBRACKET;
+terminal IF, ELSE, PREFIX, SUFFIX;       
+terminal String     STRING_LITERAL;  // the String means the token carries a string value
+terminal String     IDENTIFIER;
+
+
+/*  Non terminals */
+non terminal String start_list;
+non terminal String    exp;
+non terminal definitions;
+//, calls, parameters, parTail, args_list, arg, ifExp, ifCond;      
+
+
+
+//#### Precedence Declarations
+
+// precedence IF;
+precedence left PLUS;  // PLUS(concat) has higher priority
+
+start with start_list;
+
+//####  The Grammar Rules
+
+start_list ::= exp:e         {: System.out.println(e); :}
+            ;
+
+exp      ::= exp:e1 PLUS exp:e2     {:  RESULT = e1 + " + " +  e2;  :} // we are building the java code
+            | STRING_LITERAL:s	    {:  RESULT = "\"" +  s  +  "\"";  :}
+            | IDENTIFIER:i          {:  RESULT = i;:}
+            //  | call:c
+            //  | ifExp:
+             ;
