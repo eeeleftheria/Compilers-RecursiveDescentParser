@@ -29,8 +29,8 @@ terminal String     IDENTIFIER;
 /*  Non terminals */
 non terminal String start_list;
 non terminal String exp;
-non terminal String definitions, calls, parameters, parTail;
-//, args_list, arg, ifExp, ifCond;      
+non terminal String definitions, calls, parameters, parTail, args, argsTail;
+//, ifExp, ifCond;      
 
 
 
@@ -54,11 +54,14 @@ exp      ::= exp:e1 PLUS exp:e2     {:  RESULT = e1 + " + " +  e2;  :} // we are
              ;
 
 definitions ::= definitions:d IDENTIFIER:i LPAREN parameters:p RPAREN LBRACE exp:e RBRACE   {: RESULT = d + i + "(" + p + ")" + "{" + e + "}"; :}
+            | definitions:d IDENTIFIER:i LPAREN RPAREN LBRACE exp:e RBRACE   {: RESULT = d + i + "(" + ")" + "{" + e + "}"; :}
             | IDENTIFIER:i LPAREN parameters:p RPAREN LBRACE exp:e RBRACE {: RESULT = i + "(" +  p + ")" + "{" + e + "}"; :}
             | IDENTIFIER:i LPAREN RPAREN LBRACE exp:e RBRACE {: RESULT = i + "(" + ")" + "{" + e + "}"; :}
             ;
     
-calls    ::= calls:c IDENTIFIER:i LPAREN RPAREN   {:  RESULT = c + i + "(" + ")"; :}
+calls    ::= calls:c IDENTIFIER:i LPAREN args:a RPAREN   {:  RESULT = c + i + "(" + a + ")"; :}
+            | calls:c IDENTIFIER:i LPAREN RPAREN   {:  RESULT = c + i + "(" + ")"; :}
+            | IDENTIFIER:i LPAREN args:a RPAREN  {:  RESULT = i + "(" + a + ")"; :}
             | IDENTIFIER:i LPAREN RPAREN  {:  RESULT = i + "(" + ")"; :}
             ;
 
@@ -68,3 +71,11 @@ parameters  ::= IDENTIFIER:i parTail:t  {:  RESULT = i + t; :}
 parTail ::=  COMMA parameters:p     {:  RESULT = "," + p; :}
             |       {: RESULT = ""; :}
             ;
+
+args ::= args:a COMMA exp:e {:  RESULT = a + "," + e; :}
+            | exp:e         {:  RESULT = e; :}
+            ;
+
+argsTail ::= COMMA args:a {:    RESULT = "," + a; :}
+        |                {: RESULT = ""; :}
+        ;
