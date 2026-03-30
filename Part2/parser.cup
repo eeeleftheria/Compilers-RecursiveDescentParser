@@ -51,12 +51,12 @@ definitions ::= definitions:d defItem:i {:  RESULT = d + i; :}
             | defItem:i {:  RESULT = i; :}  
             ;
 
-defItem ::=  IDENTIFIER:i LPAREN args:p RPAREN LBRACE exp:e RBRACE   {: RESULT = i + "(" + p + ")" + "{" + e + "}"; :}
-            | IDENTIFIER:i LPAREN RPAREN LBRACE exp:e RBRACE {: RESULT = i + "(" + ")" + "{" + e + "}"; :}
+defItem ::=  IDENTIFIER:i LPAREN args:p RPAREN LBRACE exp:e RBRACE   {: RESULT = i + "(" + p + ")" + "{" + "\n" + "\t" + e + "\n" + "}" + "\n"; :}
+            | IDENTIFIER:i LPAREN RPAREN LBRACE exp:e RBRACE {: RESULT = i + "(" + ")" + "{" + "\n" + "\t" + e + "\n" + "}" + "\n"; :}
             ;
 
 parameters  ::= IDENTIFIER:i                      {:  RESULT = i; :}
-            | parameters:p COMMA IDENTIFIER:i    {:  RESULT = p + "," + i; :}
+            | parameters:p COMMA IDENTIFIER:i    {:  RESULT = p + ", " + i; :}
             ;
 
 exp      ::= exp:e1 PLUS exp:e2     {:  RESULT = e1 + " + " +  e2;  :} // we are building the java code
@@ -70,10 +70,10 @@ calls    ::= calls:c callItem:i {:  RESULT = c + i; :}
             | callItem:i        {:  RESULT = i; :}
             ;
 
-callItem    ::= IDENTIFIER:i LPAREN args:a RPAREN   {:  RESULT = i + "(" + a + ")"; :}
-            | IDENTIFIER:i LPAREN RPAREN  {:  RESULT = i + "()"; :}
+callItem    ::= IDENTIFIER:i LPAREN args:a RPAREN   {:  RESULT = i + "(" + a + ")\n"; :}
+            | IDENTIFIER:i LPAREN RPAREN  {:  RESULT = i + "()\n"; :}
             ;
 
-args ::= args:a COMMA exp:e  {:  RESULT = a + "," + e; :}
+args ::= args:a COMMA exp:e  {:  RESULT = a + ", " + e; :}
             | exp:e1        {:  RESULT = e1; :}
             ;
