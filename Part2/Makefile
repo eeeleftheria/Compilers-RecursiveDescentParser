@@ -1,17 +1,18 @@
 all: compile
 
 compile:
+	truncate -s 0 Output.java
 	./jflex-1.8.2/bin/jflex scanner.flex
 	java -jar java-cup-11b.jar -interface -parser Parser parser.cup
 	javac -cp java-cup-11b-runtime.jar *.java
 
-execute 1:
-	java -cp java-cup-11b-runtime.jar:. Main < inputs/input1.txt
+execute1:
+	java -cp java-cup-11b-runtime.jar:. Main < inputs/input1.txt > Output.java
 
-execute 2:
-	java -cp java-cup-11b-runtime.jar:. Main < inputs/input2.txt
-execute 3:
-	java -cp java-cup-11b-runtime.jar:. Main < inputs/input3.txt
+execute2:
+	java -cp java-cup-11b-runtime.jar:. Main < inputs/input2.txt > Output.java
+execute3:
+	java -cp java-cup-11b-runtime.jar:. Main < inputs/input3.txt > Output.java
 
 clean:
 	rm -f *.class *~
