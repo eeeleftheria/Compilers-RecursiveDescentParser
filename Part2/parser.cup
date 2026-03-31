@@ -41,6 +41,20 @@ parser code {:
             return "False";
         }
     }
+
+    public static String print_start_of_program(String d, String c){
+    
+        StringBuffer stringBuffer = new StringBuffer();
+
+        stringBuffer.append("public class Main {\n");
+        stringBuffer.append("\tpublic static void main(String[] args) {\n\t\t");
+        stringBuffer.append(c);
+        stringBuffer.append("\t}\n\n");
+        stringBuffer.append(d);
+        stringBuffer.append("}");
+
+        return stringBuffer.toString();
+    }
 :}
 
 /* define how to connect to the scanner! */
@@ -58,7 +72,7 @@ terminal String     IDENTIFIER;
 
 
 /*  Non terminals */
-non terminal String start_list;
+non terminal start_list;
 non terminal String exp;
 non terminal String definitions, calls, parameters, parTail, args, argsTail;
 non terminal String callItem, defItem;
@@ -76,15 +90,15 @@ start with start_list;
 
 //####  The Grammar Rules
 
-start_list ::= definitions:d calls:c         {: System.out.println(d + c); :}
+start_list ::= definitions:d calls:c         {: System.out.println(print_start_of_program(d, c)); :}
             ;
 
 definitions ::= definitions:d defItem:i {:  RESULT = d + i; :}
             | defItem:i {:  RESULT = i; :}  
             ;
 
-defItem ::=  IDENTIFIER:i LPAREN args:p RPAREN LBRACE exp:e RBRACE   {: RESULT = i + "(" + p + "){" + "\n" + "\t" + e + "\n" + "}" + "\n"; :}
-            | IDENTIFIER:i LPAREN RPAREN LBRACE exp:e RBRACE {: RESULT = i + "(){" + "\n" + "\t" + e + "\n" + "}" + "\n"; :}
+defItem ::=  IDENTIFIER:i LPAREN args:p RPAREN LBRACE exp:e RBRACE   {: RESULT = "\t" + i + "(" + p + "){" + "\n" + "\t\t return " + e + ";\n\t" + "}" + "\n"; :}
+            | IDENTIFIER:i LPAREN RPAREN LBRACE exp:e RBRACE {: RESULT = "\t" + i + "(){" + "\n" + "\t\t return " + e + ";\n" + "\t}" + "\n"; :}
             ;
 
 parameters  ::= IDENTIFIER:i                      {:  RESULT = i; :}
@@ -102,8 +116,8 @@ calls    ::= calls:c callItem:i {:  RESULT = c + i; :}
             | callItem:i        {:  RESULT = i; :}
             ;
 
-callItem    ::= IDENTIFIER:i LPAREN args:a RPAREN   {:  RESULT = i + "(" + a + ")\n"; :}
-            | IDENTIFIER:i LPAREN RPAREN  {:  RESULT = i + "()\n"; :}
+callItem    ::= IDENTIFIER:i LPAREN args:a RPAREN   {:  RESULT = "System.out.println(" + i + "(" + a + "));\n"; :}
+            | IDENTIFIER:i LPAREN RPAREN  {:  RESULT = "System.out.println(" + i + "());\n"; :}
             ;
 
 
@@ -111,9 +125,9 @@ args ::= args:a COMMA exp:e  {:  RESULT = a + ", " + e; :}
             | exp:e1        {:  RESULT = e1; :}
             ;
 
-ifExp   ::= IF LPAREN ifCond:c RPAREN exp:e1 ELSE exp:e2    {:  RESULT = select_cond(c, e1, e2); :}
+ifExp   ::= IF LPAREN ifCond:c RPAREN exp:e1 ELSE exp:e2    {:  RESULT = "if (" + c + ")\n\t\t" +  e1 + "else(" + e2 + ")\n\t"; :}
         ;
 
-ifCond  ::= exp:e1 PREFIX exp:e2    {:  RESULT = "is_prefix_of(e1, e2);"; :}
-        | exp:e1 SUFFIX exp:e2  {:  RESULT = "is_suffix_of(e1, e2);"; :}
+ifCond  ::= exp:e1 PREFIX exp:e2    {:  RESULT = "is_prefix_of(" + e1 + ", " + e2 + ")"; :}
+        | exp:e1 SUFFIX exp:e2  {:  RESULT = "is_suffix_of(" + e1 + ", " + e2 + ")"; :}
         ;

@@ -73,10 +73,11 @@ SUFFIX = "suffix"
 <YYINITIAL> {
 /* operators */
  "+"        {  return symbol(sym.PLUS); }
- "("        {  return symbol(sym.LPAREN); }
- ")"        {  return symbol(sym.RPAREN); }
- ","        {  return symbol(sym.COMMA);}
+ "){"        {  return symbol(sym.RPAREN_LBRACE);}
  "{"        {  return symbol(sym.LBRACE);}
+ ","        {  return symbol(sym.COMMA);}
+ ")"        {  return symbol(sym.RPAREN); }
+ "("        {  return symbol(sym.LPAREN); }
  "}"        {  return symbol(sym.RBRACE);}
  {IF}        {  return symbol(sym.IF);}
  {ELSE}      {  return symbol(sym.ELSE);}
