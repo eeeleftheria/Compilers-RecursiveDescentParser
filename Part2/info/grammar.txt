@@ -14,7 +14,6 @@ Tail -> a-z Tail
 definitions -> identifier ( parameters ) { exp } definitions
 
 parameters -> identifier ParTail
-    | ε
 
 ParTail -> , parameters 
     | ε

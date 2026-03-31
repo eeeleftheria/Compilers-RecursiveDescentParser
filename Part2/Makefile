@@ -5,8 +5,13 @@ compile:
 	java -jar java-cup-11b.jar -interface -parser Parser parser.cup
 	javac -cp java-cup-11b-runtime.jar *.java
 
-execute:
-	java -cp java-cup-11b-runtime.jar:. Main
+execute 1:
+	java -cp java-cup-11b-runtime.jar:. Main < inputs/input1.txt
+
+execute 2:
+	java -cp java-cup-11b-runtime.jar:. Main < inputs/input2.txt
+execute 3:
+	java -cp java-cup-11b-runtime.jar:. Main < inputs/input3.txt
 
 clean:
 	rm -f *.class *~
