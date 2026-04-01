@@ -6,25 +6,37 @@
 /** CUP generated interface containing symbol constants. */
 public interface sym {
   /* terminals */
-  public static final int MINUS = 4;
-  public static final int SEMI = 2;
-  public static final int STRING_LITERAL = 8;
+  public static final int LBRACE = 4;
+  public static final int RPAREN_LBRACE = 3;
+  public static final int STRING_LITERAL = 13;
+  public static final int PREFIX = 11;
   public static final int EOF = 0;
-  public static final int PLUS = 3;
+  public static final int PLUS = 2;
+  public static final int IF = 9;
+  public static final int ELSE = 10;
+  public static final int COMMA = 8;
   public static final int error = 1;
   public static final int RPAREN = 7;
-  public static final int TIMES = 5;
+  public static final int IDENTIFIER = 14;
+  public static final int SUFFIX = 12;
   public static final int LPAREN = 6;
+  public static final int RBRACE = 5;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
-  "SEMI",
   "PLUS",
-  "MINUS",
-  "TIMES",
+  "RPAREN_LBRACE",
+  "LBRACE",
+  "RBRACE",
   "LPAREN",
   "RPAREN",
-  "STRING_LITERAL"
+  "COMMA",
+  "IF",
+  "ELSE",
+  "PREFIX",
+  "SUFFIX",
+  "STRING_LITERAL",
+  "IDENTIFIER"
   };
 }
 

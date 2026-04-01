@@ -2,7 +2,7 @@ all: compile
 
 compile:
 	truncate -s 0 Output.java
-	./jflex-1.8.2/bin/jflex scanner.flex
+	./jflex-1.9.1/bin/jflex scanner.flex
 	java -jar java-cup-11b.jar -interface -parser Parser parser.cup
 	javac -cp java-cup-11b-runtime.jar *.java
 
