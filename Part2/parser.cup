@@ -48,7 +48,7 @@ non terminal String exp;
 non terminal String definitions, calls, parameters, paramsTail, args, argsTail;
 non terminal String callItem, defItem;
 non terminal String ifExp, ifCond;
-non terminal String innerCall;   
+non terminal String innerCall, innerIf;   
 
 
 
@@ -85,7 +85,7 @@ exp      ::= exp:e1 PLUS exp:e2     {:  RESULT = e1 + " + " +  e2;  :} // we are
             // inner call should be treated differently from outer call
             // calls that are produced from exp are always inner coming from args->exp
             | innerCall:c            {:  RESULT = c; :} 
-            | ifExp:e               {: RESULT = e; :}
+            | innerIf:e               {: RESULT = e; :}
             ;
    
 calls    ::= calls:c callItem:i {:  RESULT = c + i; :}
@@ -108,6 +108,9 @@ argsTail    ::= COMMA exp:e {: RESULT = ", " + e; :}
             ;
 
 ifExp   ::= IF LPAREN ifCond:c RPAREN exp:e1 ELSE exp:e2    {:  RESULT = c + " ? " + e1 + " : " + e2 + ";\n"; :}
+            ;
+
+innerIf ::= IF LPAREN ifCond:c RPAREN exp:e1 ELSE exp:e2    {:  RESULT = c + " ? " + e1 + " : " + e2; :}
             ;
 
 ifCond  ::= exp:e1 PREFIX exp:e2    {:  RESULT =  e2 + ".startsWith(" + e1 + ")"; :}
