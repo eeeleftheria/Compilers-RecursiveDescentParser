@@ -10,7 +10,7 @@ execute1, 2 and 3 use as input the example #1, #2 and #3 accordingly.
 The result is printed to the Output.java file. My final Java code
 is not fully correct, so I redirect the output to a file instead of
 printing to stdout, so you can test it by adding manually the "String" 
-types in front of the identifiers inside declarations.
+types before the identifiers inside declarations.
 
 ## Initial grammar
 
@@ -91,7 +91,7 @@ at least that's what I thought).
 
 ## Test cases
 In order to test the cases with the "slightly" wrong Java code,
-you can add the type String in front of every identifier of every
+you can add the type String in before every identifier of every
 function declaration.
 I used the test cases of https://piazza.com/class/mlr5w0vw9i12lp/post/44 
 
