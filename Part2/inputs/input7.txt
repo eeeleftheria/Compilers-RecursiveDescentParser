@@ -1,0 +1,8 @@
+test(a, b) {
+    if (a prefix b)
+        a + " is prefix of " + b
+    else
+        a + " is not prefix of " + b
+}
+
+test("he" + "llo", "hello" + " world")

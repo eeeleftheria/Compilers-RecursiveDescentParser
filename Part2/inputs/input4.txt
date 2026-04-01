@@ -1,0 +1,9 @@
+foo(x) {
+    if ("a" prefix x)
+        x + x
+    else
+        "a" + x
+}
+
+foo("abc")
+foo("xyz")

@@ -1,0 +1,12 @@
+empty_check(x) {
+    if ("" prefix x)
+        if (x suffix "")
+            "is empty"
+        else
+            "starts with empty"
+    else
+        "impossible"
+}
+
+empty_check("")
+empty_check("not empty")

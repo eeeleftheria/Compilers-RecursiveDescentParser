@@ -1,0 +1,7 @@
+wrap(x) {
+    "[" + x + "]"
+}
+double_wrap(x) {
+    wrap(wrap(x))
+}
+double_wrap("hello")

@@ -14,6 +14,8 @@ findLangType(langName) {
             "Unknown"
 }
 
+ return langName.startsWith("Java") ? "Java".startsWith(langName) ? "Static" : langName.endsWith("script") ? "Dynamic" : "Unknown" : langName.endsWith("script") ? "Probably Dynamic" : "Unknown";
+
 findLangType("Java")
 findLangType("Javascript")
 findLangType("Typescript")
