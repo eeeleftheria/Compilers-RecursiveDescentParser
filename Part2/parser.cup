@@ -18,7 +18,7 @@ parser code {:
         StringBuffer stringBuffer = new StringBuffer();
 
         stringBuffer.append("public class Output {\n");
-        stringBuffer.append("\tpublic static void main(String[] args) {\n\t\t");
+        stringBuffer.append("\tpublic static void main(String[] args) {\n");
         stringBuffer.append(c);
         stringBuffer.append("\t}\n\n");
         stringBuffer.append(d);
@@ -92,7 +92,7 @@ calls    ::= calls:c callItem:i {:  RESULT = c + i; :}
             | callItem:i        {:  RESULT = i; :}
             ;
 
-callItem    ::=  innerCall:i  {:  RESULT = "System.out.println(" + i + ");\n"; :}
+callItem    ::=  innerCall:i  {:  RESULT = "\t\tSystem.out.println(" + i + ");\n"; :}
             ;
 
 innerCall   ::= IDENTIFIER:i LPAREN args:a RPAREN   {:  RESULT = i + "(" + a + ")"; :}
