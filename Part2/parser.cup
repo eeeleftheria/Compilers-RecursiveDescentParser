@@ -45,10 +45,10 @@ terminal String     IDENTIFIER;
 /*  Non terminals */
 non terminal start_list;
 non terminal String exp;
-non terminal String definitions, calls, parameters, parTail, args, argsTail;
+non terminal String definitions, calls, parameters, paramsTail, args, argsTail;
 non terminal String callItem, defItem;
-non terminal String ifExp;
-non terminal String ifCond;      
+non terminal String ifExp, ifCond;
+non terminal String innerCall;   
 
 
 
@@ -68,18 +68,23 @@ definitions ::= definitions:d defItem:i {:  RESULT = d + i; :}
             | defItem:i {:  RESULT = i; :}  
             ;
 
-defItem ::=  IDENTIFIER:i LPAREN args:p RPAREN LBRACE exp:e RBRACE   {: RESULT = "\tpublic static String " + i + "(" + p + "){" + "\n" + "\t\t return " + e + ";\n\t" + "}" + "\n"; :}
-            | IDENTIFIER:i LPAREN RPAREN LBRACE exp:e RBRACE {: RESULT = "\tpublic static String " + i + "(){" + "\n" + "\t\t return " + e + ";\n" + "\t}" + "\n"; :}
+defItem ::=  IDENTIFIER:i LPAREN args:p RPAREN_LBRACE exp:e RBRACE   {: RESULT = "\tpublic static String " + i + "(" + p + "){" + "\n" + "\t\t return " + e + ";\n\t" + "}" + "\n"; :}
+            | IDENTIFIER:i LPAREN RPAREN_LBRACE exp:e RBRACE {: RESULT = "\tpublic static String " + i + "(){" + "\n" + "\t\t return " + e + ";\n" + "\t}" + "\n"; :}
             ;
 
-parameters  ::= IDENTIFIER:i                      {:  RESULT = i; :}
-            | parameters:p COMMA IDENTIFIER:i    {:  RESULT = p + ", " + i; :}
+parameters  ::= IDENTIFIER:i                      {:  RESULT = "String " + i; :}
+            | parameters:p paramsTail:t    {:  RESULT = p + t; :}
+            ;
+
+paramsTail  ::=  COMMA IDENTIFIER:i {:  RESULT = ", String " + i; :}
             ;
 
 exp      ::= exp:e1 PLUS exp:e2     {:  RESULT = e1 + " + " +  e2;  :} // we are building the java code
             | STRING_LITERAL:s	    {:  RESULT = "\"" +  s  +  "\"";  :}
             | IDENTIFIER:i          {:  RESULT = i; :}
-            | callItem:c            {:  RESULT = c; :} // it is already a String
+            // inner call should be treated differently from outer call
+            // calls that are produced from exp are always inner coming from args->exp
+            | innerCall:c            {:  RESULT = c; :} 
             | ifExp:e               {: RESULT = e; :}
             ;
    
@@ -87,13 +92,19 @@ calls    ::= calls:c callItem:i {:  RESULT = c + i; :}
             | callItem:i        {:  RESULT = i; :}
             ;
 
-callItem    ::= IDENTIFIER:i LPAREN args:a RPAREN   {:  RESULT = "System.out.println(" + i + "(" + a + "));\n"; :}
-            | IDENTIFIER:i LPAREN RPAREN  {:  RESULT = "System.out.println(" + i + "());\n"; :}
+callItem    ::=  innerCall:i  {:  RESULT = "System.out.println(" + i + ");\n"; :}
+            ;
+
+innerCall   ::= IDENTIFIER:i LPAREN args:a RPAREN   {:  RESULT = i + "(" + a + ")"; :}
+            | IDENTIFIER:i LPAREN RPAREN  {:  RESULT =  i + "()"; :}
             ;
 
 
-args ::= args:a COMMA exp:e  {:  RESULT = a + ", " + e; :}
+args ::= args:a argsTail:t  {:  RESULT = a + t; :}
             | exp:e1        {:  RESULT = e1; :}
+            ;
+
+argsTail    ::= COMMA exp:e {: RESULT = ", " + e; :}
             ;
 
 ifExp   ::= IF LPAREN ifCond:c RPAREN exp:e1 ELSE exp:e2    {:  RESULT = c + " ? " + e1 + " : " + e2 + ";\n"; :}
