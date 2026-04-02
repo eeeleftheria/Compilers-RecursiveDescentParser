@@ -62,9 +62,7 @@ in the case of inner calls e.g foo("str", bar()) it was necessary to add
 an extra non terminal. This way, when translating into Java code only
 the outer foo() call prints the "System.out.println()" needed to print
 the output of the call, while bar() is just passed as an identifier
-producing a String output. Similarly, I seperated the if conditions
-so as only the outer one prints the whole instruction 
-cond ? true_case : false_case;
+producing a String output.
 
 ## Conflicts
 The main conflict i faced was:
@@ -99,5 +97,6 @@ ToDo/Fix:
     - input8.txt: test with no declerations and no calls
     - input9.txt: test with strings outside of a function body
     - input10.txt: test with no calls
+    - input11.txt: empty file
 
   

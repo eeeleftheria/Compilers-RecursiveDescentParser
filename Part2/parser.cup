@@ -36,7 +36,7 @@ scan with {: return s.next_token(); :};
 
 /* Terminals (tokens returned by the scanner). */
 terminal PLUS;
-terminal RPAREN_LBRACE, LBRACE ,RBRACE, LPAREN, RPAREN, COMMA ;
+terminal RPAREN_LBRACE, RBRACE, LPAREN, RPAREN, COMMA ;
 terminal IF, ELSE, PREFIX, SUFFIX;       
 terminal String     STRING_LITERAL;  // the String means the token carries a string value
 terminal String     IDENTIFIER;
@@ -48,7 +48,7 @@ non terminal String exp;
 non terminal String definitions, calls, parameters, paramsTail, args, argsTail;
 non terminal String callItem, defItem;
 non terminal String ifExp, ifCond;
-non terminal String innerCall, innerIf;   
+non terminal String innerCall;   
 
 
 
@@ -85,7 +85,7 @@ exp      ::= exp:e1 PLUS exp:e2     {:  RESULT = e1 + " + " +  e2;  :} // we are
             // inner call should be treated differently from outer call
             // calls that are produced from exp are always inner coming from args->exp
             | innerCall:c            {:  RESULT = c; :} 
-            | innerIf:e               {: RESULT = e; :}
+            | ifExp:e               {: RESULT = e; :}
             ;
    
 calls    ::= calls:c callItem:i {:  RESULT = c + i; :}
@@ -107,10 +107,7 @@ args ::= args:a argsTail:t  {:  RESULT = a + t; :}
 argsTail    ::= COMMA exp:e {: RESULT = ", " + e; :}
             ;
 
-ifExp   ::= IF LPAREN ifCond:c RPAREN exp:e1 ELSE exp:e2    {:  RESULT = c + " ? " + e1 + " : " + e2 + ";\n"; :}
-            ;
-
-innerIf ::= IF LPAREN ifCond:c RPAREN exp:e1 ELSE exp:e2    {:  RESULT = c + " ? " + e1 + " : " + e2; :}
+ifExp   ::= IF LPAREN ifCond:c RPAREN exp:e1 ELSE exp:e2    {:  RESULT = c + " ? " + e1 + " : " + e2; :}
             ;
 
 ifCond  ::= exp:e1 PREFIX exp:e2    {:  RESULT =  e2 + ".startsWith(" + e1 + ")"; :}
