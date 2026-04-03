@@ -1,0 +1,10 @@
+name() {
+    "John"
+}
+ 
+greet(s) {
+    "Hello " + s
+}
+ 
+greet(name())
+ 

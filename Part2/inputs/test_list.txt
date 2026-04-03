@@ -1,0 +1,15 @@
+Test1.txt    Hello World\n
+Test2.txt    Hello, World\n
+Test3.txt    starts with He\ndoes not start with He\n
+Test4.txt    ends with ld\ndoes not end with ld\n
+Test5.txt    Hello World\n
+Test6.txt    starts with a and ends with z\nstarts with a\ndoes not start with a\n
+Test7.txt    foobarbaz\n
+Test8.txt    Hello John\n
+Test9.txt    (yes)\n(no)\n
+Test10.txt   hello\n
+Test11.txt   match\nonly prefix\nonly suffix\nno match\n
+Test12.txt   ababab\n
+Test13.txt   ***hello!***\n--world--\n
+Test14.txt   Hello Alice!\nHello Bob!\nHello Charlie!\n
+Test15.txt   base_extended\nunknown\n

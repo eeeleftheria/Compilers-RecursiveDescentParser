@@ -1,0 +1,13 @@
+wrap(s, left, right) {
+    left + s + right
+}
+ 
+decorate(s) {
+    if ("!" suffix s)
+        wrap(s, "***", "***")
+    else
+        wrap(s, "--", "--")
+}
+ 
+decorate("hello!")
+decorate("world")

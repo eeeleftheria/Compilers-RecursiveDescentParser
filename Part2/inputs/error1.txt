@@ -1,0 +1,6 @@
+foo(s) {
+    if ("a" prefix s)
+        "yes"
+}
+ 
+foo("abc")

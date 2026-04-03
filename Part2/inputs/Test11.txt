@@ -1,0 +1,17 @@
+check(s) {
+    if ("ab" prefix s)
+        if ("yz" suffix s)
+            "match"
+        else
+            "only prefix"
+    else
+        if ("yz" suffix s)
+            "only suffix"
+        else
+            "no match"
+}
+ 
+check("abcyz")
+check("abcde")
+check("xyzyz")
+check("hello")

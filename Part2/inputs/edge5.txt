@@ -1,0 +1,10 @@
+empty() {
+    ""
+}
+ 
+test(s) {
+    s + empty() + s
+}
+ 
+test("ab")
+test("")

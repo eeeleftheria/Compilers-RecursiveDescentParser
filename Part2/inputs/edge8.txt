@@ -1,0 +1,19 @@
+prefix_str() {
+    "hello"
+}
+ 
+full_str() {
+    "helloworld"
+}
+ 
+check() {
+    if (prefix_str() prefix full_str())
+        if (full_str() suffix "world")
+            "both match"
+        else
+            "only prefix"
+    else
+        "no match"
+}
+ 
+check()

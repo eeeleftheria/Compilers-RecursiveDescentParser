@@ -1,0 +1,13 @@
+classify(s) {
+    if ("a" prefix s)
+        if ("z" suffix s)
+            "starts with a and ends with z"
+        else
+            "starts with a"
+    else
+        "does not start with a"
+}
+ 
+classify("abcz")
+classify("abc")
+classify("xyz")

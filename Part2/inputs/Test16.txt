@@ -1,0 +1,11 @@
+Romis(){
+    "Ramantan"
+}
+
+"Ramantan"
+Romis()
+
+if(Romis() suffix Romis())
+    "yes"
+else
+    "no"

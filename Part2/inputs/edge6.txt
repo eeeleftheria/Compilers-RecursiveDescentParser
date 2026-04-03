@@ -1,0 +1,9 @@
+test(s) {
+    if ("lo" suffix s)
+        "yes"
+    else
+        "no"
+}
+ 
+test("hel")
+test("abc")

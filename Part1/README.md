@@ -19,7 +19,7 @@
 
 In order to transform the initial grammar to a LL(1) I applied 4 
 transformations:
-- precendences:  based on the lectures' slides (specifically the 
+- presedence:  based on the lectures' slides (specifically the 
 transformation from slide 9 to slide 19 of the syntax analysis unit), I
 created a non-terminal <term> which produces ** deeper in the grammar,
 thus with a higher priority. Basically, <term> is evaluated first as part of

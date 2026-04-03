@@ -1,0 +1,6 @@
+foo(s) {
+    s
+}
+
+foo("yes" + " correct")
+foo(if ("y" prefix "yes") " correct" else " incorrect")

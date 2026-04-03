@@ -1,0 +1,9 @@
+check(s) {
+    if ("ld" suffix s)
+        "ends with ld"
+    else
+        "does not end with ld"
+}
+ 
+check("World")
+check("Hello")

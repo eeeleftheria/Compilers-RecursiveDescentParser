@@ -1,0 +1,17 @@
+grade(s) {
+    if ("A" prefix s)
+        "excellent"
+    else
+        if ("B" prefix s)
+            "good"
+        else
+            "average"
+}
+ 
+report(s) {
+    "Grade: " + grade(s)
+}
+ 
+report("Alice")
+report("Bob")
+report("Charlie")

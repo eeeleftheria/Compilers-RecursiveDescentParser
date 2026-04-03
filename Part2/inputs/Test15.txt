@@ -1,0 +1,17 @@
+base() {
+    "base"
+}
+ 
+extend(s) {
+    s + "_extended"
+}
+ 
+check(s) {
+    if ("base" prefix s)
+        extend(s)
+    else
+        "unknown"
+}
+ 
+check(base())
+check("other")

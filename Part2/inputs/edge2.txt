@@ -1,0 +1,16 @@
+hello() {
+    "hello"
+}
+ 
+world() {
+    "helloworld"
+}
+ 
+check() {
+    if (hello() prefix world())
+        "yes"
+    else
+        "no"
+}
+ 
+check()

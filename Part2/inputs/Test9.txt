@@ -1,0 +1,13 @@
+wrap(s) {
+    "(" + s + ")"
+}
+ 
+check(s) {
+    if ("ok" prefix s)
+        "yes"
+    else
+        "no"
+}
+ 
+wrap(check("ok_test"))
+wrap(check("fail"))
