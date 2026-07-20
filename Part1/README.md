@@ -1,3 +1,46 @@
+# Simple string expression evaluator
+For the first part of this homework we should implement a simple string expression evaluator. The evaluator should accept expressions with the ** and / operators, as well as parentheses.
+
+The operator `**` is left-associative and is described as follows:
+
+```
+a**b = a∘b∘b
+```
+
+That is, it concatenates its second operand twice at the end of its first operand.
+
+The operator `/` is right-associative and is described by the following formula:
+```
+a/b = { a, if b is not a suffix of a
+      q, if a = q∘b`
+```
+Operator ** has higher priority than operator /.
+
+The grammar is summarized in:
+```
+exp -> str
+      | exp op exp
+      | (exp)
+op -> /
+      | **
+str -> char
+      | char str
+char -> a-z
+      | A-Z
+```
+You need to change this grammar to support priority between the operators, to remove the left recursion for LL parsing, etc.
+
+You have to write a recursive descent parser in Java that reads expressions and computes the values or prints “parse error” if there is a syntax error. You don’t need to identify blank spaces. You can read the symbols one-by-one (as in the C getchar() function). The expression must end with a newline or EOF.
+
+Your parser should read its input from the standard input (e.g., via an InputStream on System.in) and write the computed values of expressions to the standard output (System.out). Parse errors should be reported on standard error (System.err).
+
+Examples:
+```
+a**b**c     --> abbcc
+aaaaa/aa/a  --> aaaa
+(aaaa/aa)/a --> a
+abb**cc/c   --> abbccc
+```
 
 ## LL(1)-GRAMMAR
 
@@ -81,11 +124,11 @@ left recursion appears only in rule #4, since it is of type A->*Aa.
 
 After making our grammar a LL(1) grammar, I calculated the 
 FIRST AND FOLLOW sets of each rule and finally, the FIRST+ sets. The 
-detailed process can be viewed in the <firstFollowSets.txt> file. 
+detailed process can be viewed in the `firstFollowSets.txt` file. 
 
 ## LOOKUP-TABLE
 
-The lookup table can be viewd in the <lookupTable.txt> file.
+The lookup table can be viewd in the `lookupTable.txt` file.
 
 ## EVALUATOR
 
@@ -98,23 +141,23 @@ characters in the wrong place.
 
 After doing that, I started the evaluation
 process by implementing operator '/'. In order to do that, I wrote a 
-<EvalExcl(String s1, String s2)> function that takes two strings and
+`EvalExcl(String s1, String s2)` function that takes two strings and
 checks if s2 is a suffix of s1. If so, it keeps the substring of s1 
 excluding the suffix and returns it. This function is called inside 
-the non-terminal <Exp()> after the recursive calls of <Term()> and
-<expTail()>. If <expTail()> has returned a non-empty string it means
-that an operation '/' should be applied between the output of <Term()>
+the non-terminal `Exp` after the recursive calls of `Term()` and
+`expTail()`. If `expTail()` has returned a non-empty string it means
+that an operation '/' should be applied between the output of `Term()`
 (left part of operation) and the output of <expTail()>. This implementation
 is valid with the right associativity of the operator, since the outer '/'
 is calculated only after the inner ones have been calculated.
 
-Regarding the operator '**', I created a <evalDoubleStar(String s1, Strings2)> 
-appending the s2 string twice to the s1. Initially, I tried calling
-the function inside <Term()> however this did not work with the left
-associativity of the operator. Instead, I put it inside <TermTail()>
+Regarding the operator '**', I created a `evalDoubleStar(String s1, Strings2)` function
+that appends the s2 string twice to the s1. Initially, I tried calling
+the function inside `Term()` however this did not work with the left
+associativity of the operator. Instead, I put it inside `TermTail()`
 where it performs the operation with the factor as the right part
-and the string passed by <Term()> as the left part. The result is then
+and the string passed by `Term()` as the left part. The result is then
 passed as the left side of the operation to the next recursive call of
-<TermTail()>. If there is no other character following (meaning 
-lookahead is either eof, \n, etc) <TermTail()> return the string as it is.
+`TermTail()`. If there is no other character following (meaning 
+lookahead is either eof, \n, etc) `TermTail()` return the string as it is.
 
