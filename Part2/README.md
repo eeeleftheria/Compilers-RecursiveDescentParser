@@ -1,18 +1,26 @@
-## To run use Makefile:
-```
+## How to run
+### Compile
+```bash
 make compile
+```
+### Execute
+```bash
 make execute1 # takes as input example #1 
 make execute2 # takes as input example #2 
 make execute3 # takes as input example #3
-...
-make execute7
+```
+
+### Clean
+```bash
 make clean
 ```
 execute1, 2 and 3 use as input the examples #1, #2 and #3 accordingly.
-The rest, use the test cases https://piazza.com/class/mlr5w0vw9i12lp/post/44 
-and https://piazza.com/class/mlr5w0vw9i12lp/post/45. I have added
+
+The rest, use the test cases `https://piazza.com/class/mlr5w0vw9i12lp/post/44`
+and `https://piazza.com/class/mlr5w0vw9i12lp/post/45`. I have added
 one make execute for each category (edge cases, error cases etc).
-The result is printed to the Output.java file. 
+The result is printed to the `Output.java` file. 
+
 [!] My final Java code is not fully correct, so I redirect the output to a file 
 instead of printing to stdout, so you can test it by manually adding the "String" 
 types before the identifiers inside declarations.
