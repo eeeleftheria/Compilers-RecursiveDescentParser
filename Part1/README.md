@@ -1,13 +1,14 @@
 # Simple string expression evaluator
 For the first part of this homework we should implement a simple string expression evaluator. The evaluator should accept expressions with the ** and / operators, as well as parentheses.
 
-The operator `**` is left-associative and is described as follows:
+The operator `**` is left-associative and it concatenates its second operand twice at the end of its first operand.
+
+It is described as follows:
 
 ```
 a**b = a∘b∘b
 ```
 
-That is, it concatenates its second operand twice at the end of its first operand.
 
 The operator `/` is right-associative and is described by the following formula:
 ```
@@ -42,7 +43,8 @@ aaaaa/aa/a  --> aaaa
 abb**cc/c   --> abbccc
 ```
 
-## LL(1)-GRAMMAR
+## Implementation
+### LL(1)-Grammar
 
 ```
 1. exp -> term expTail 
@@ -64,10 +66,9 @@ In order to transform the initial grammar to a LL(1) I applied 4
 transformations:
 - presedence:  based on the lectures' slides (specifically the 
 transformation from slide 9 to slide 19 of the syntax analysis unit), I
-created a non-terminal <term> which produces ** deeper in the grammar,
-thus with a higher priority. Basically, <term> is evaluated first as part of
-the evaluation of <exp> and only after that is the operation '/' 
-evaluated.  
+created a non-terminal `term` which produces `**` deeper in the grammar,
+thus with a higher priority. Basically, `term` is evaluated first as part of
+the evaluation of `exp` and only after that is the operation `/` evaluated.  
 ```
 1. exp -> term 
 2.     | exp / term 
@@ -81,9 +82,9 @@ evaluated.
 10.     | A-Z
 ```
 
-- associativity: ** is already left associative since in can be produced 
+- associativity: `**` is already left associative since in can be produced 
 through left recursion, while the recursion of rule #2 should be swapped 
-since we need <term> to appear on the right side as a right associative so 
+since we need `term` to appear on the right side as a right associative so 
 the right operations are evaluated first.
 ```
 1. exp -> term 
@@ -120,17 +121,17 @@ left recursion appears only in rule #4, since it is of type A->*Aa.
 13.     | A-Z
 ```
 
-## FIRST/FOLLOW-SETS
+## First-Follow Sets
 
 After making our grammar a LL(1) grammar, I calculated the 
 FIRST AND FOLLOW sets of each rule and finally, the FIRST+ sets. The 
 detailed process can be viewed in the `firstFollowSets.txt` file. 
 
-## LOOKUP-TABLE
+## Lookup-Table
 
-The lookup table can be viewd in the `lookupTable.txt` file.
+The lookup table can be viewed in the `lookupTable.txt` file.
 
-## EVALUATOR
+## Evaluator
 
 My solution for the parser was built upon the TernaryGrammar example we were
 given and the lectures' slides. Initially, i started by returning true or
@@ -140,18 +141,18 @@ printing the correct input, which revealed some mistakes with consuming
 characters in the wrong place. 
 
 After doing that, I started the evaluation
-process by implementing operator '/'. In order to do that, I wrote a 
+process by implementing operator `/`. In order to do that, I wrote a 
 `EvalExcl(String s1, String s2)` function that takes two strings and
 checks if s2 is a suffix of s1. If so, it keeps the substring of s1 
 excluding the suffix and returns it. This function is called inside 
 the non-terminal `Exp` after the recursive calls of `Term()` and
 `expTail()`. If `expTail()` has returned a non-empty string it means
-that an operation '/' should be applied between the output of `Term()`
-(left part of operation) and the output of <expTail()>. This implementation
-is valid with the right associativity of the operator, since the outer '/'
+that an operation `/` should be applied between the output of `Term()`
+(left part of operation) and the output of `expTail()`. This implementation
+is valid with the right associativity of the operator, since the outer `/`
 is calculated only after the inner ones have been calculated.
 
-Regarding the operator '**', I created a `evalDoubleStar(String s1, Strings2)` function
+Regarding the operator `**`, I created a `evalDoubleStar(String s1, Strings2)` function
 that appends the s2 string twice to the s1. Initially, I tried calling
 the function inside `Term()` however this did not work with the left
 associativity of the operator. Instead, I put it inside `TermTail()`
@@ -159,5 +160,5 @@ where it performs the operation with the factor as the right part
 and the string passed by `Term()` as the left part. The result is then
 passed as the left side of the operation to the next recursive call of
 `TermTail()`. If there is no other character following (meaning 
-lookahead is either eof, \n, etc) `TermTail()` return the string as it is.
+lookahead is either `eof`, `\n`, etc) `TermTail()` returns the string as it is.
 
