@@ -1,9 +1,0 @@
-twice(s) {
-    s + s
-}
-
-triple(s) {
-    twice(s) + s
-}
-
-triple("ab")

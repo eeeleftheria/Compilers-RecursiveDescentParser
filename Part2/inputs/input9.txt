@@ -1,9 +1,0 @@
-foo(x) {
-    x + "!"
-}
-"standalone string"
-"hello" + " " + "world"
-if ("Java" prefix "JavaScript") "yes" else "no"
-if ("Mug" prefix "Cup") "yes" else "no"
-if ("x" suffix "abcx") foo("match") else foo("no match")
-if ("a" suffix "abcx") foo("match") else foo("no match")

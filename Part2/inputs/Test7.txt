@@ -1,5 +1,0 @@
-join(a, b, c) {
-    a + b + c
-}
- 
-join("foo", "bar", "baz")

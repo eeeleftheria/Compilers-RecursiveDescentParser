@@ -1,5 +1,0 @@
-check(x) {
-    x
-}
-
-check(if ("a" prefix "abc") if ("abc" suffix "abc") "both" else "prefix only" else "neither")

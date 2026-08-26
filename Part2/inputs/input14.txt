@@ -1,5 +1,0 @@
-foo(x) {
-    x 
-}
-
-foo(     " needed some space "  )

@@ -1,6 +1,0 @@
-test(s) {
-    "result: " + if ("yes" prefix s) "positive" else "negative"
-}
- 
-test("yes")
-test("no")

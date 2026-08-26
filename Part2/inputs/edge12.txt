@@ -1,9 +1,0 @@
-foo() {
-    "foo"
-}
- 
-if ("fo" prefix foo())
-    "yes"
-else
-    "no"
- 

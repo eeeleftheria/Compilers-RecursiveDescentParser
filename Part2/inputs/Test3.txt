@@ -1,9 +1,0 @@
-check(s) {
-    if ("He" prefix s)
-        "starts with He"
-    else
-        "does not start with He"
-}
- 
-check("Hello")
-check("World")
