@@ -162,3 +162,9 @@ passed as the left side of the operation to the next recursive call of
 `TermTail()`. If there is no other character following (meaning 
 lookahead is either `eof`, `\n`, etc) `TermTail()` returns the string as it is.
 
+## To run
+```bash
+javac Main.java
+java Main
+```
+
